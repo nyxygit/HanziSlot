@@ -1,42 +1,20 @@
-"use client";
+import GamePageClient from "./GamePageClient";
 
-import React, { useEffect } from "react";
-import { useParams } from "next/navigation";
-import { GameProvider, useGameContext } from "@/context/GameContext";
-import GameBoard from "@/components/GameBoard";
-import NavigationHeader from "@/components/NavigationHeader";
-
-function GamePageContent() {
-  const params = useParams();
-  const levelId = params?.levelId as string;
-  const { state, loadLevel } = useGameContext();
-
-  useEffect(() => {
-    if (levelId) {
-      loadLevel(levelId);
-    }
-  }, [levelId, loadLevel]);
-
-  return (
-    <div className="min-h-screen bg-slate-50">
-      <NavigationHeader
-        levelName={state.level?.name}
-        progress={
-          state.level
-            ? { current: state.currentSentenceIndex, total: state.totalSentences }
-            : undefined
-        }
-        score={state.overallScore}
-      />
-      <GameBoard />
-    </div>
-  );
+// List all level IDs for static generation
+export function generateStaticParams() {
+  return [
+    { levelId: "level-1" },
+    { levelId: "level-2" },
+    { levelId: "level-3" },
+    { levelId: "level-4" },
+    { levelId: "level-5" },
+    { levelId: "level-6" },
+    { levelId: "topic-school" },
+    { levelId: "topic-shopping" },
+    { levelId: "topic-clothing" },
+  ];
 }
 
 export default function GamePage() {
-  return (
-    <GameProvider>
-      <GamePageContent />
-    </GameProvider>
-  );
+  return <GamePageClient />;
 }
