@@ -219,8 +219,7 @@ export default function GameBoard() {
           pb-3 px-2 w-full
           snap-x snap-mandatory snap-proximity
           overscroll-x-contain scrollbar-thin-mobile
-          justify-center
-          md:flex-wrap md:justify-center md:overflow-visible
+          justify-start md:justify-center
           md:snap-none md:pb-0 md:px-0
           mb-4 md:mb-10
         "
