@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useGameContext } from "@/context/GameContext";
 import { Level, PartOfSpeech, SentencePart } from "@/types";
 import SlotColumn from "./SlotColumn";
@@ -111,6 +111,21 @@ export default function GameBoard() {
   const currentProgress = state.sentenceProgress[currentSentenceIndex];
   const currentAttempts = currentProgress.attempts;
 
+  // Scroll position tracking for the slot indicator bar
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollInfo, setScrollInfo] = useState({ scrollLeft: 0, scrollWidth: 0, clientWidth: 0 });
+  const updateScrollInfo = useCallback(() => {
+    const el = scrollRef.current;
+    if (el) {
+      setScrollInfo({ scrollLeft: el.scrollLeft, scrollWidth: el.scrollWidth, clientWidth: el.clientWidth });
+    }
+  }, []);
+  useEffect(() => {
+    // Initial measurement after render
+    const timer = setTimeout(updateScrollInfo, 50);
+    return () => clearTimeout(timer);
+  }, [currentSentence, updateScrollInfo]);
+
   // Compute fixed slot indices once (they don't change per sentence)
   const fixedSlotIndices = state.level ? getFixedSlotIndices(state.level) : [];
   // Compute static part indices for the current sentence
@@ -212,8 +227,10 @@ export default function GameBoard() {
         </span>
       </div>
 
-      {/* Slot Machine Columns — centered on mobile with scroll when overflow, wrap on desktop */}
+      {/* Slot Machine Columns — horizontal scroll on all sizes, no wrapping */}
       <div
+        ref={scrollRef}
+        onScroll={updateScrollInfo}
         className="
           flex flex-nowrap overflow-x-auto gap-3 md:gap-6
           pb-3 px-2 w-full
@@ -221,11 +238,25 @@ export default function GameBoard() {
           overscroll-x-contain scrollbar-thin-mobile
           justify-start md:justify-center
           md:snap-none md:pb-0 md:px-0
-          mb-4 md:mb-10
         "
       >
         {slotElements}
       </div>
+
+      {/* Scroll progress indicator — visible when content overflows */}
+      {scrollInfo.scrollWidth > scrollInfo.clientWidth && (
+        <div className="w-full max-w-md px-4 mb-4 md:mb-10">
+          <div className="relative h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div
+              className="absolute top-0 left-0 h-full bg-indigo-300 rounded-full transition-all duration-150"
+              style={{
+                width: `${(scrollInfo.clientWidth / scrollInfo.scrollWidth) * 100}%`,
+                transform: `translateX(${(scrollInfo.scrollLeft / scrollInfo.scrollWidth) * 100}%)`,
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Submit / Action Button — sticky on mobile, static on desktop */}
       <div className="
