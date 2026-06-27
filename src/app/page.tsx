@@ -1,16 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Level } from "@/types";
 import { fetchLevels, fetchUserProgress, UserProgress } from "@/lib/api";
 import LevelSelectCard from "@/components/LevelSelectCard";
 import WordBankExplorer from "@/components/WordBankExplorer";
 
 export default function Home() {
+  const router = useRouter();
   const [levels, setLevels] = useState<Level[]>([]);
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"structures" | "topics" | "wordbank">("structures");
+  const [randomCount, setRandomCount] = useState(10);
 
   useEffect(() => {
     async function load() {
@@ -149,6 +152,48 @@ export default function Home() {
             <p className="text-sm text-slate-500 mb-6">
               Practice with themed vocabulary in real-world contexts — using multiple sentence patterns
             </p>
+
+            {/* Random Practice Card */}
+            <div className="mb-6 bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-700 text-white rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
+                  <span className="text-lg">🎲</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold">Random Practice</h3>
+                  <p className="text-xs text-purple-100">
+                    Mixed sentences from all levels
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm text-purple-100 mb-4">
+                Practice with a random selection of sentences pulled from every level
+                and topic.
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 bg-white/15 rounded-lg px-3 py-2">
+                  <span className="text-xs font-medium text-purple-100">Questions:</span>
+                  <select
+                    value={randomCount}
+                    onChange={(e) => setRandomCount(Number(e.target.value))}
+                    className="bg-transparent text-white text-sm font-semibold border-none outline-none cursor-pointer appearance-none [&>option]:text-slate-800"
+                  >
+                    <option value={5} className="text-slate-800">5</option>
+                    <option value={10} className="text-slate-800">10</option>
+                    <option value={15} className="text-slate-800">15</option>
+                    <option value={20} className="text-slate-800">20</option>
+                    <option value={999} className="text-slate-800">All</option>
+                  </select>
+                </div>
+                <button
+                  onClick={() => router.push(`/game/random-practice?count=${randomCount}`)}
+                  className="bg-white text-purple-700 text-sm font-semibold px-4 py-2 rounded-lg hover:bg-purple-50 transition-colors"
+                >
+                  Start Practice →
+                </button>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {topicLevels.map((level) => {
                 const completedLevel = progress?.completedLevels[level.id];

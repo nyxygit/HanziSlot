@@ -10,7 +10,7 @@ Two tabs at the top of the content area: **"Levels"** (default, existing) and **
 
 The Word Bank tab shows category buttons (pill-style) for each part of speech used in the game:
 
-| Category | Words Available |
+| Category | Words Available |Take a nap
 |----------|---------------|
 | Subjects | 8 |
 | Verbs | 10 |

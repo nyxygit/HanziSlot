@@ -32,6 +32,10 @@ const partOfSpeechLabels: Record<PartOfSpeech, string> = {
   negation: "Negation",
   modal: "Modal",
   particle: "Particle",
+  preposition: "Prep",
+  conjunction: "Conj",
+  complement: "Comp",
+  clause: "Clause",
 };
 
 const DEFAULT_ITEM_HEIGHT = 80;

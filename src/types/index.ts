@@ -9,7 +9,11 @@ export type PartOfSpeech =
   | "place"
   | "negation"
   | "modal"
-  | "particle";
+  | "particle"
+  | "preposition"
+  | "conjunction"
+  | "complement"
+  | "clause";
 
 export type LevelCategory = "structure" | "topic";
 

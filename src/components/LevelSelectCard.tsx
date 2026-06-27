@@ -28,6 +28,8 @@ export default function LevelSelectCard({
 }: LevelSelectCardProps) {
   const isTopic = level.category === "topic";
 
+  const isStructure = level.category === "structure";
+
   return (
     <Link
       href={`/game/${level.id}`}
@@ -64,27 +66,35 @@ export default function LevelSelectCard({
       </p>
 
       <div className="flex items-center justify-between">
-        <div className="flex gap-0.5">
-          {[1, 2, 3].map((s) => (
-            <span
-              key={s}
-              className={`text-lg ${
-                s <= stars ? "text-amber-400" : "text-slate-200"
-              }`}
-            >
-              ★
-            </span>
-          ))}
-        </div>
-        {completed && (
-          <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-            {score}/{maxScore}
+        {isStructure ? (
+          <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+            {level.sentences.length} sentence{level.sentences.length !== 1 ? "s" : ""}
           </span>
-        )}
-        {!completed && (
-          <span className="text-xs font-medium text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full group-hover:bg-indigo-100 transition-colors">
-            Play →
-          </span>
+        ) : (
+          <>
+            <div className="flex gap-0.5">
+              {[1, 2, 3].map((s) => (
+                <span
+                  key={s}
+                  className={`text-lg ${
+                    s <= stars ? "text-amber-400" : "text-slate-200"
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            {completed && (
+              <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                {score}/{maxScore}
+              </span>
+            )}
+            {!completed && (
+              <span className="text-xs font-medium text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full group-hover:bg-indigo-100 transition-colors">
+                Play →
+              </span>
+            )}
+          </>
         )}
       </div>
     </Link>

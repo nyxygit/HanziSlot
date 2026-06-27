@@ -7,7 +7,8 @@ import { wordBank } from "@/data/wordBank";
 // Ordered by relevance to gameplay
 const categoryOrder: PartOfSpeech[] = [
   "subject", "verb", "object", "adjective", "noun",
-  "time", "place", "negation", "modal", "particle", "adverb"
+  "time", "place", "negation", "modal", "particle", "adverb",
+  "preposition", "conjunction", "complement", "clause"
 ];
 
 const categoryLabels: Record<PartOfSpeech, string> = {
@@ -22,6 +23,10 @@ const categoryLabels: Record<PartOfSpeech, string> = {
   modal: "Modal",
   particle: "Particle",
   adverb: "Adverb",
+  preposition: "Preposition",
+  conjunction: "Conjunction",
+  complement: "Complement",
+  clause: "Clause",
 };
 
 interface CategoryInfo {
@@ -85,6 +90,26 @@ const categoryInfo: Record<PartOfSpeech, CategoryInfo> = {
     description: "Modifies verbs or adjectives to add detail. Adverbs come before the word they modify in Chinese.",
     example: "Subject + Adverb + Verb",
     translation: "我们 + 都 + 去",
+  },
+  preposition: {
+    description: "Words like 在, 把, 被, 比, 给, 对 that introduce location, objects, or comparisons in a sentence.",
+    example: "Subject + 在 + Place + Verb",
+    translation: "我 + 在 + 学校 + 学",
+  },
+  conjunction: {
+    description: "Connects clauses or sentences. Words like 因为 (because), 所以 (so), 但是 (but), 如果 (if), 虽然 (although).",
+    example: "因为 + Clause + 所以 + Clause",
+    translation: "因为 + 下雨 + 所以 + 不去",
+  },
+  complement: {
+    description: "Describes the result, degree, or direction of an action. Placed after a verb, often with 得 (de).",
+    example: "Subject + Verb + 得 + Complement",
+    translation: "他 + 跑 + 得 + 很快",
+  },
+  clause: {
+    description: "A short, self-contained clause used in compound sentence patterns. Often paired with conjunctions.",
+    example: "因为 + Clause + 所以 + Clause",
+    translation: "因为 + 下雨 + 所以 + 不去",
   },
 };
 
