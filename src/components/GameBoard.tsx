@@ -215,7 +215,7 @@ export default function GameBoard() {
       {/* Slot Machine Columns — centered on mobile with scroll when overflow, wrap on desktop */}
       <div
         className="
-          flex flex-nowrap overflow-x-auto gap-3 md:gap-12
+          flex flex-nowrap overflow-x-auto gap-3 md:gap-6
           pb-3 px-2 w-full
           snap-x snap-mandatory snap-proximity
           overscroll-x-contain scrollbar-thin-mobile

@@ -17,7 +17,7 @@ export const level5ZaiPlace: Level = {
   sentences: [
     {
       id: "s1-l05",
-      english: "I eat at school.",
+      english: "I eat lunch at school.",
       parts: [
         { chinese: "我", pinyin: "wǒ", english: "I / me", partOfSpeech: "subject", distractors: getDistractors("subject", "我", 3) },
         { chinese: "在", pinyin: "zài", english: "at / in / on", partOfSpeech: "preposition", distractors: ["去", "到", "从"] },
@@ -50,7 +50,7 @@ export const level5ZaiPlace: Level = {
     },
     {
       id: "s4-l05",
-      english: "I study at home.",
+      english: "I study Chinese at home.",
       parts: [
         { chinese: "我", pinyin: "wǒ", english: "I / me", partOfSpeech: "subject", distractors: getDistractors("subject", "我", 3) },
         { chinese: "在", pinyin: "zài", english: "at / in / on", partOfSpeech: "preposition", distractors: ["去", "到", "从"] },
