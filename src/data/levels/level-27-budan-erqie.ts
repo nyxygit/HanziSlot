@@ -19,6 +19,7 @@ export const level27BudanErqie: Level = {
       id: "s1-l27",
       english: "Not only is it cheap, but also delicious.",
       parts: [
+        { chinese: "这个", pinyin: "zhè gè", english: "this / it", partOfSpeech: "subject", distractors: [], static: true },
         { chinese: "不但", pinyin: "bù dàn", english: "not only", partOfSpeech: "conjunction", distractors: ["虽然", "因为", "如果"] },
         { chinese: "便宜", pinyin: "pián yi", english: "cheap", partOfSpeech: "adjective", distractors: getDistractors("adjective", "便宜", 3) },
         { chinese: "而且", pinyin: "ér qiě", english: "but also", partOfSpeech: "conjunction", distractors: ["但是", "所以", "就"] },
@@ -29,6 +30,7 @@ export const level27BudanErqie: Level = {
       id: "s2-l27",
       english: "Not only is she tall, but also beautiful.",
       parts: [
+        { chinese: "她", pinyin: "tā", english: "she / her", partOfSpeech: "subject", distractors: [], static: true },
         { chinese: "不但", pinyin: "bù dàn", english: "not only", partOfSpeech: "conjunction", distractors: ["虽然", "因为", "如果"] },
         { chinese: "高", pinyin: "gāo", english: "tall", partOfSpeech: "adjective", distractors: getDistractors("adjective", "高", 3) },
         { chinese: "而且", pinyin: "ér qiě", english: "but also", partOfSpeech: "conjunction", distractors: ["但是", "所以", "就"] },
@@ -39,6 +41,7 @@ export const level27BudanErqie: Level = {
       id: "s3-l27",
       english: "Not only is this big, but also cheap.",
       parts: [
+        { chinese: "这个", pinyin: "zhè gè", english: "this", partOfSpeech: "subject", distractors: [], static: true },
         { chinese: "不但", pinyin: "bù dàn", english: "not only", partOfSpeech: "conjunction", distractors: ["虽然", "因为", "如果"] },
         { chinese: "大", pinyin: "dà", english: "big", partOfSpeech: "adjective", distractors: getDistractors("adjective", "大", 3) },
         { chinese: "而且", pinyin: "ér qiě", english: "but also", partOfSpeech: "conjunction", distractors: ["但是", "所以", "就"] },
@@ -49,6 +52,7 @@ export const level27BudanErqie: Level = {
       id: "s4-l27",
       english: "Not only is he busy, but also tired.",
       parts: [
+        { chinese: "他", pinyin: "tā", english: "he / him", partOfSpeech: "subject", distractors: [], static: true },
         { chinese: "不但", pinyin: "bù dàn", english: "not only", partOfSpeech: "conjunction", distractors: ["虽然", "因为", "如果"] },
         { chinese: "忙", pinyin: "máng", english: "busy", partOfSpeech: "adjective", distractors: getDistractors("adjective", "忙", 3) },
         { chinese: "而且", pinyin: "ér qiě", english: "but also", partOfSpeech: "conjunction", distractors: ["但是", "所以", "就"] },

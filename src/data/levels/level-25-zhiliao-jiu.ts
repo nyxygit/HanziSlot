@@ -19,6 +19,7 @@ export const level25ZhiliaoJiu: Level = {
       id: "s1-l25",
       english: "As long as you work hard, you will succeed.",
       parts: [
+        { chinese: "你", pinyin: "nǐ", english: "you", partOfSpeech: "subject", distractors: [], static: true },
         { chinese: "只要", pinyin: "zhǐ yào", english: "as long as", partOfSpeech: "conjunction", distractors: ["因为", "虽然", "如果"] },
         { chinese: "努力", pinyin: "nǔ lì", english: "work hard", partOfSpeech: "clause", distractors: ["学习", "工作", "帮忙"] },
         { chinese: "就", pinyin: "jiù", english: "then", partOfSpeech: "adverb", distractors: ["也", "都", "还"] },
@@ -29,6 +30,7 @@ export const level25ZhiliaoJiu: Level = {
       id: "s2-l25",
       english: "As long as you have money, you can buy it.",
       parts: [
+        { chinese: "你", pinyin: "nǐ", english: "you", partOfSpeech: "subject", distractors: [], static: true },
         { chinese: "只要", pinyin: "zhǐ yào", english: "as long as", partOfSpeech: "conjunction", distractors: ["因为", "虽然", "如果"] },
         { chinese: "有钱", pinyin: "yǒu qián", english: "have money", partOfSpeech: "clause", distractors: ["有空", "有时间", "有车"] },
         { chinese: "就", pinyin: "jiù", english: "then", partOfSpeech: "adverb", distractors: ["也", "都", "还"] },
@@ -41,6 +43,7 @@ export const level25ZhiliaoJiu: Level = {
       parts: [
         { chinese: "只要", pinyin: "zhǐ yào", english: "as long as", partOfSpeech: "conjunction", distractors: ["因为", "虽然", "如果"] },
         { chinese: "不下雨", pinyin: "bú xià yǔ", english: "doesn't rain", partOfSpeech: "clause", distractors: ["不刮风", "不冷", "不热"] },
+        { chinese: "我", pinyin: "wǒ", english: "I / me", partOfSpeech: "subject", distractors: [], static: true },
         { chinese: "就", pinyin: "jiù", english: "then", partOfSpeech: "adverb", distractors: ["也", "都", "还"] },
         { chinese: "去", pinyin: "qù", english: "go", partOfSpeech: "clause", distractors: ["来", "做", "买"] },
       ],

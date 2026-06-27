@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useGameContext } from "@/context/GameContext";
-import { Level, PartOfSpeech } from "@/types";
+import { Level, PartOfSpeech, SentencePart } from "@/types";
 import SlotColumn from "./SlotColumn";
 import EnglishSentence from "./EnglishSentence";
 import LevelCompleteOverlay from "./LevelCompleteOverlay";
@@ -38,6 +38,28 @@ function getFixedSlotIndices(level: Level): number[] {
     if (isSlotFixed(level, i)) indices.push(i);
   }
   return indices;
+}
+
+/** A small badge that displays a static context part as non-interactive text. */
+function StaticPartBadge({ part }: { part: SentencePart }) {
+  return (
+    <div className="flex flex-col items-center gap-1 select-none snap-start shrink-0">
+      <div
+        className="
+          min-w-[3.5rem] py-2 px-3 rounded-lg
+          bg-slate-100 border border-slate-200
+          text-sm md:text-base font-bold text-slate-500
+          text-center leading-tight
+        "
+        title={`${part.pinyin} — ${part.english}`}
+      >
+        {part.chinese}
+      </div>
+      <span className="text-[10px] text-slate-400 italic whitespace-nowrap">
+        {part.pinyin}
+      </span>
+    </div>
+  );
 }
 
 export default function GameBoard() {
@@ -89,17 +111,23 @@ export default function GameBoard() {
   const currentProgress = state.sentenceProgress[currentSentenceIndex];
   const currentAttempts = currentProgress.attempts;
 
-  const handleConfirm = () => {
-    confirmAnswer(fixedSlotIndices);
-  };
-
   // Compute fixed slot indices once (they don't change per sentence)
   const fixedSlotIndices = state.level ? getFixedSlotIndices(state.level) : [];
+  // Compute static part indices for the current sentence
+  const staticIndices = currentSentence.parts
+    .map((part, i) => (part.static ? i : -1))
+    .filter((i) => i >= 0);
+  // Combine both sets of indices to skip during validation
+  const skipIndices = [...fixedSlotIndices, ...staticIndices];
+
+  const handleConfirm = () => {
+    confirmAnswer(skipIndices);
+  };
 
   let resultStars = 0;
   let correctSentenceStr = "";
   if (phase === "result" || phase === "checking") {
-    const result = validateAnswer(slots, currentSentence, fixedSlotIndices);
+    const result = validateAnswer(slots, currentSentence, skipIndices);
     resultStars = result.allCorrect ? calculateStars(currentAttempts) : 0;
     correctSentenceStr = result.correctSentence;
   }
@@ -124,6 +152,46 @@ export default function GameBoard() {
       retrySentence();
     }
   };
+
+  // Build the slot/static-part elements array before rendering
+  const slotElements: React.ReactNode[] = [];
+  let quizzedIndex = 0;
+  for (let i = 0; i < currentSentence.parts.length; i++) {
+    const part = currentSentence.parts[i];
+    if (part.static) {
+      slotElements.push(
+        <StaticPartBadge key={`static-${currentSentence.id}-${i}`} part={part} />
+      );
+    } else {
+      const slot = slots[i];
+      const structureIndex = quizzedIndex;
+      quizzedIndex++;
+      const fixed = state.level ? isSlotFixed(state.level, i) : false;
+      const fixedSelectedIndex = fixed && currentSentence
+        ? slot.options.indexOf(currentSentence.parts[i]?.chinese)
+        : slot.selectedIndex;
+
+      slotElements.push(
+        <div key={`slot-${currentSentence.id}-${i}`} className="snap-start shrink-0">
+          <SlotColumn
+            options={slot.options}
+            selectedIndex={fixedSelectedIndex >= 0 ? fixedSelectedIndex : slot.selectedIndex}
+            label={state.level!.pattern.structure[structureIndex]}
+            partOfSpeech={currentSentence.parts[i]?.partOfSpeech as PartOfSpeech}
+            isCorrect={slot.isCorrect}
+            hasBeenChecked={slot.hasBeenChecked}
+            pinyin={slot.pinyin}
+            english={slot.english}
+            optionPinyins={slot.optionPinyins}
+            optionEnglishs={slot.optionEnglishs}
+            onSelect={(option) => selectOption(i, option)}
+            disabled={phase === "result" || (phase === "checking" && slot.isCorrect === true)}
+            fixed={fixed}
+          />
+        </div>
+      );
+    }
+  }
 
   return (
     <div className="flex flex-col items-center w-full max-w-4xl mx-auto px-4 py-4 md:py-6 min-h-dvh md:min-h-0">
@@ -157,37 +225,7 @@ export default function GameBoard() {
           mb-4 md:mb-10
         "
       >
-        {slots.map((slot, index) => {
-          const fixed = state.level ? isSlotFixed(state.level, index) : false;
-          // For fixed slots, ensure selectedIndex points to the correct answer
-          const fixedSelectedIndex = fixed && currentSentence
-            ? slot.options.indexOf(currentSentence.parts[index]?.chinese)
-            : slot.selectedIndex;
-
-          return (
-            <div
-              key={`slot-${currentSentence.id}-${index}`}
-              className="snap-start shrink-0"
-            >
-              <SlotColumn
-                options={slot.options}
-                selectedIndex={fixedSelectedIndex >= 0 ? fixedSelectedIndex : slot.selectedIndex}
-                label={state.level!.pattern.structure[index]}
-                partOfSpeech={currentSentence.parts[index]?.partOfSpeech as PartOfSpeech}
-                isCorrect={slot.isCorrect}
-                hasBeenChecked={slot.hasBeenChecked}
-                pinyin={slot.pinyin}
-                english={slot.english}
-                optionPinyins={slot.optionPinyins}
-                optionEnglishs={slot.optionEnglishs}
-                onSelect={(option) => selectOption(index, option)}
-                // In "checking" phase, only lock correct slots; incorrect slots stay editable
-                disabled={phase === "result" || (phase === "checking" && slot.isCorrect === true)}
-                fixed={fixed}
-              />
-            </div>
-          );
-        })}
+        {slotElements}
       </div>
 
       {/* Submit / Action Button — sticky on mobile, static on desktop */}

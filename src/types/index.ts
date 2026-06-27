@@ -30,6 +30,8 @@ export interface SentencePart {
   english: string;
   partOfSpeech: PartOfSpeech;
   distractors: string[];
+  /** If true, this part is displayed as static context text (not quizzed as a slot). */
+  static?: boolean;
 }
 
 export interface SentenceItem {
