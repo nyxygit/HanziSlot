@@ -55,20 +55,10 @@ export default function Home() {
     <div className="min-h-screen bg-slate-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-700 text-white">
-        <div className="max-w-4xl mx-auto px-4 py-10 md:py-16 text-center">
-          <h1 className="text-3xl md:text-5xl font-black mb-2 md:mb-3 tracking-tight">
+        <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 text-center">
+          <h1 className="text-3xl md:text-5xl font-black tracking-tight">
             HanziSlot
           </h1>
-          <p className="text-base md:text-xl text-indigo-100 max-w-xl mx-auto mb-4 px-2">
-            Build Chinese sentences like a slot machine! Spin through words and
-            master sentence patterns.
-          </p>
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs sm:text-sm text-indigo-200">
-            <span>🎯 {levels.length} Levels</span>
-            <span>📖 {totalSentences} Sentences</span>
-            <span>🏆 {uniquePatterns} Patterns</span>
-            {topicCount > 0 && <span>📚 {topicCount} Topics</span>}
-          </div>
         </div>
       </div>
 
@@ -229,7 +219,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-slate-200 py-8 mt-8">
         <div className="max-w-4xl mx-auto px-4 text-center text-sm text-slate-400">
-          <p>HanziSlot — Learn Chinese sentence patterns the fun way 🎰</p>
+          <p>Unlock the next level of Mandarin with sentence patterns</p>
         </div>
       </footer>
     </div>

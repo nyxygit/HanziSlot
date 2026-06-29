@@ -73,7 +73,6 @@ function GamePageContentInner() {
             ? { current: state.currentSentenceIndex, total: state.totalSentences }
             : undefined
         }
-        score={state.overallScore}
       />
       <GameBoard />
     </div>

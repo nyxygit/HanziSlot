@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect } from "react";
 import { useGameContext } from "@/context/GameContext";
 import { Level, PartOfSpeech, SentencePart } from "@/types";
 import SlotColumn from "./SlotColumn";
@@ -111,21 +111,6 @@ export default function GameBoard() {
   const currentProgress = state.sentenceProgress[currentSentenceIndex];
   const currentAttempts = currentProgress.attempts;
 
-  // Scroll position tracking for the slot indicator bar
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [scrollInfo, setScrollInfo] = useState({ scrollLeft: 0, scrollWidth: 0, clientWidth: 0 });
-  const updateScrollInfo = useCallback(() => {
-    const el = scrollRef.current;
-    if (el) {
-      setScrollInfo({ scrollLeft: el.scrollLeft, scrollWidth: el.scrollWidth, clientWidth: el.clientWidth });
-    }
-  }, []);
-  useEffect(() => {
-    // Initial measurement after render
-    const timer = setTimeout(updateScrollInfo, 50);
-    return () => clearTimeout(timer);
-  }, [currentSentence, updateScrollInfo]);
-
   // Compute fixed slot indices once (they don't change per sentence)
   const fixedSlotIndices = state.level ? getFixedSlotIndices(state.level) : [];
   // Compute static part indices for the current sentence
@@ -200,6 +185,7 @@ export default function GameBoard() {
             optionPinyins={slot.optionPinyins}
             optionEnglishs={slot.optionEnglishs}
             onSelect={(option) => selectOption(i, option)}
+            // In "checking" phase, only lock correct slots; incorrect slots stay editable
             disabled={phase === "result" || (phase === "checking" && slot.isCorrect === true)}
             fixed={fixed}
           />
@@ -209,7 +195,7 @@ export default function GameBoard() {
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-4xl mx-auto px-4 py-4 md:py-6 min-h-dvh md:min-h-0">
+    <div className="flex flex-col items-center w-full max-w-4xl mx-auto px-4 py-3 md:py-6 min-h-dvh md:min-h-0">
       {/* English Sentence */}
       <EnglishSentence
         sentence={currentSentence.english}
@@ -218,7 +204,7 @@ export default function GameBoard() {
       />
 
       {/* Pattern / Topic hint */}
-      <div className="mb-4 md:mb-6">
+      <div className="mb-2 md:mb-6">
         <span className="text-[10px] sm:text-xs font-medium text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full">
           {state.level.category === "topic"
             ? `Topic: ${state.level.topic || state.level.name}`
@@ -227,38 +213,20 @@ export default function GameBoard() {
         </span>
       </div>
 
-      {/* Slot Machine Columns — horizontal scroll on all sizes, no wrapping */}
-      <div
-        ref={scrollRef}
-        onScroll={updateScrollInfo}
-        className="
-          flex flex-nowrap overflow-x-auto gap-3 md:gap-6
-          pb-3 px-2 w-full
-          snap-x snap-mandatory snap-proximity
-          overscroll-x-contain scrollbar-thin-mobile
-          justify-start md:justify-center
-          md:snap-none md:pb-0 md:px-0
-        "
-      >
-        {slotElements}
+      {/* Scroll zone — flex-1 fills all space between content and sticky button on mobile */}
+      <div className="flex-1 w-full overflow-x-auto overscroll-x-contain scrollbar-thick md:flex-none md:min-h-0 md:mb-8">
+        <div
+          className="
+            flex flex-nowrap gap-3 md:gap-6
+            px-4 justify-start
+            md:px-4
+          "
+        >
+          {slotElements}
+        </div>
       </div>
 
-      {/* Scroll progress indicator — visible when content overflows */}
-      {scrollInfo.scrollWidth > scrollInfo.clientWidth && (
-        <div className="w-full max-w-md px-4 mb-4 md:mb-10">
-          <div className="relative h-2 bg-slate-100 rounded-full overflow-hidden">
-            <div
-              className="absolute top-0 left-0 h-full bg-indigo-300 rounded-full transition-all duration-150"
-              style={{
-                width: `${(scrollInfo.clientWidth / scrollInfo.scrollWidth) * 100}%`,
-                transform: `translateX(${(scrollInfo.scrollLeft / scrollInfo.scrollWidth) * 100}%)`,
-              }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Submit / Action Button — sticky on mobile, static on desktop */}
+      {/* Submit / Action Button — sticky at bottom on mobile, static on desktop */}
       <div className="
         sticky bottom-0
         w-full
@@ -266,7 +234,6 @@ export default function GameBoard() {
         pt-3 pb-4 md:pb-0 md:pt-0
         md:bg-none md:static md:w-auto
         flex flex-col items-center
-        mt-auto md:mt-0
       ">
         {!isAnswered ? (
           <button

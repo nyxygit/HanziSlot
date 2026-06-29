@@ -128,35 +128,36 @@ body {
   animation: slot-spin-down 0.3s ease-in-out;
 }
 
-/* ── Scrollbar styles for horizontal slot container ── */
-.scrollbar-thin-mobile {
-  scrollbar-width: thin;
+/* ── Thick native scrollbar for the slot container ── */
+.scrollbar-thick {
+  scrollbar-width: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
 }
 
-.scrollbar-thin-mobile::-webkit-scrollbar {
-  height: 4px;
+.scrollbar-thick::-webkit-scrollbar {
+  height: 12px;
 }
 
-.scrollbar-thin-mobile::-webkit-scrollbar-track {
-  background: transparent;
+.scrollbar-thick::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 6px;
+  margin: 0 4px;
 }
 
-.scrollbar-thin-mobile::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 2px;
+.scrollbar-thick::-webkit-scrollbar-thumb {
+  background: #a5b4fc;
+  border-radius: 6px;
+  border: 2px solid #f1f5f9;
+  min-width: 40px;
 }
 
-/* On touch devices, hide scrollbar track/thumb but keep scroll functional */
-@media (hover: none) and (pointer: coarse) {
-  .scrollbar-thin-mobile::-webkit-scrollbar {
-    height: 3px;
-  }
-  .scrollbar-thin-mobile::-webkit-scrollbar-thumb {
-    background: #94a3b8;
-    border-radius: 2px;
-  }
+.scrollbar-thick::-webkit-scrollbar-thumb:hover {
+  background: #818cf8;
+}
+
+.scrollbar-thick::-webkit-scrollbar-thumb:active {
+  background: #6366f1;
 }
 
 /* ── Snap scroll utilities ── */

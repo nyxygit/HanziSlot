@@ -224,7 +224,7 @@ export default function SlotColumn({
       )}
 
       {/* Pinyin — always visible, shows pinyin for currently selected option */}
-      <p className="text-[11px] sm:text-sm text-slate-500 font-medium">{selectedPinyin}</p>
+      <p className="text-[11px] sm:text-sm text-slate-500 font-medium md:mb-2">{selectedPinyin}</p>
 
       {/* English meaning — only shown after sentence is submitted, shows meaning for selected option */}
       {hasBeenChecked && (
