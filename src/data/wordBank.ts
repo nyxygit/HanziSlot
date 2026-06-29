@@ -1,4 +1,5 @@
 import { PartOfSpeech } from "@/types";
+import { shuffle } from "@/engine/shuffle";
 
 // Distractor words organized by part of speech
 // These are used as wrong options in slot columns
@@ -240,8 +241,8 @@ export function getDistractors(
     .filter((entry) => entry.chinese !== excludeChinese)
     .map((entry) => entry.chinese);
 
-  // Shuffle and take requested count
-  const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+  // Shuffle (Fisher-Yates) and take requested count
+  const shuffled = shuffle(filtered);
   return shuffled.slice(0, Math.min(count, shuffled.length));
 }
 
@@ -269,6 +270,6 @@ export function getDistractorEntries(
 ): { chinese: string; pinyin: string; english: string }[] {
   const pool = wordBank[partOfSpeech] || [];
   const filtered = pool.filter((entry) => entry.chinese !== excludeChinese);
-  const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+  const shuffled = shuffle(filtered);
   return shuffled.slice(0, Math.min(count, shuffled.length));
 }

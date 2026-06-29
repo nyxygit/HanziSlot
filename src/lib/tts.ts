@@ -5,17 +5,28 @@
  * Prefers neural / natural-sounding Chinese voices on the user's system.
  */
 
+let cachedVoice: SpeechSynthesisVoice | null | "pending" = null;
+let voiceCacheAttempted = false;
+
 /**
  * Get the best available voice for Chinese speech synthesis.
  * Prioritizes neural voices, then any zh-CN voice, then any Chinese-dialect voice.
+ * The result is cached after the first call to avoid repeated getVoices() invocations.
  */
 function getBestChineseVoice(): SpeechSynthesisVoice | null {
+  if (cachedVoice !== null && cachedVoice !== "pending") return cachedVoice;
+  if (voiceCacheAttempted) return cachedVoice === "pending" ? null : cachedVoice;
+
+  voiceCacheAttempted = true;
   const voices = window.speechSynthesis.getVoices();
 
   // Filter to Chinese voices (zh-CN, zh-TW, zh-HK, etc.)
   const chineseVoices = voices.filter((v) => v.lang.startsWith("zh"));
 
-  if (chineseVoices.length === 0) return null;
+  if (chineseVoices.length === 0) {
+    cachedVoice = null;
+    return null;
+  }
 
   // Preference order:
   // 1. Neural voices (contain "Neural" in name — Windows 11 / Edge)
@@ -24,16 +35,26 @@ function getBestChineseVoice(): SpeechSynthesisVoice | null {
   // 4. Any Chinese voice
 
   const neural = chineseVoices.find((v) => v.name.includes("Neural"));
-  if (neural) return neural;
+  if (neural) {
+    cachedVoice = neural;
+    return neural;
+  }
 
   const msDesktop = chineseVoices.find(
     (v) => v.name.includes("Microsoft") && v.lang === "zh-CN"
   );
-  if (msDesktop) return msDesktop;
+  if (msDesktop) {
+    cachedVoice = msDesktop;
+    return msDesktop;
+  }
 
   const zhCN = chineseVoices.find((v) => v.lang === "zh-CN");
-  if (zhCN) return zhCN;
+  if (zhCN) {
+    cachedVoice = zhCN;
+    return zhCN;
+  }
 
+  cachedVoice = chineseVoices[0];
   return chineseVoices[0];
 }
 

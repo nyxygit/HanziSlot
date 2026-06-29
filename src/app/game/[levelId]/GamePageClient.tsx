@@ -9,6 +9,39 @@ import { allLevels } from "@/data/levels";
 import { shuffle } from "@/engine/shuffle";
 import { Level, SentenceItem } from "@/types";
 
+/** Restore saved game position from sessionStorage after the level loads. */
+function useRestoreGamePosition(levelId: string, isLoaded: boolean) {
+  const { state, dispatch } = useGameContext();
+
+  const restoredRef = useRef(false);
+
+  useEffect(() => {
+    if (!isLoaded || restoredRef.current || typeof window === "undefined") return;
+
+    try {
+      const saved = sessionStorage.getItem("hanzi-slot-game-state");
+      if (!saved) return;
+
+      const parsed = JSON.parse(saved);
+      if (parsed.levelId !== levelId) return;
+
+      const targetIndex = parsed.sentenceIndex;
+      if (!targetIndex || targetIndex <= 0) return;
+
+      // Advance the level to the saved sentence index
+      restoredRef.current = true;
+      for (let i = 0; i < targetIndex; i++) {
+        dispatch({ type: "NEXT_SENTENCE" });
+      }
+
+      // Clear the saved state so it doesn't restore again
+      sessionStorage.removeItem("hanzi-slot-game-state");
+    } catch {
+      // Ignore malformed state
+    }
+  }, [isLoaded, levelId, dispatch, state.level]);
+}
+
 function GamePageContentInner() {
   const params = useParams();
   const searchParams = useSearchParams();
@@ -63,6 +96,10 @@ function GamePageContentInner() {
       }
     }
   }, [levelId, searchParams, loadLevel, dispatch]);
+
+  // Restore position after level loads
+  const isLoaded = !!state.level;
+  useRestoreGamePosition(levelId, isLoaded);
 
   return (
     <div className="min-h-screen bg-slate-50">

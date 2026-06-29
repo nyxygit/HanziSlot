@@ -31,85 +31,53 @@ const categoryLabels: Record<PartOfSpeech, string> = {
 
 interface CategoryInfo {
   description: string;
-  example: string;
-  translation: string;
 }
 
 const categoryInfo: Record<PartOfSpeech, CategoryInfo> = {
   subject: {
     description: "The doer of the action — who performs the verb. In Chinese, the subject always comes first, just like in English.",
-    example: "Subject + Verb + Object",
-    translation: "我 + 吃 + 苹果",
   },
   verb: {
     description: "The action word — what the subject does. Chinese verbs don't conjugate for person or tense — the form stays the same.",
-    example: "Subject + Verb + Object",
-    translation: "我 + 吃 + 苹果",
   },
   object: {
     description: "The receiver of the action — what the verb acts upon. Objects come after the verb, just like in English.",
-    example: "Subject + Verb + Object",
-    translation: "我 + 吃 + 苹果",
   },
   adjective: {
     description: "Describes nouns or states of being. In Chinese, adjectives follow 很 (hěn) and don't change form for comparison.",
-    example: "Subject + 很 + Adjective",
-    translation: "她 + 很 + 漂亮",
   },
   noun: {
     description: "Names for people, places, and things. Used with 是 (shì) to identify or define something.",
-    example: "Subject + 是 + Noun",
-    translation: "我 + 是 + 学生",
   },
   time: {
     description: "When something happens. Unlike English, time words always come at the beginning of the sentence in Chinese.",
-    example: "Time + Subject + Verb + Object",
-    translation: "早上 + 我 + 喝 + 咖啡",
   },
   place: {
     description: "Where something happens or where someone is located. Places follow the verb with 在 (zài).",
-    example: "Subject + 在 + Place + Verb",
-    translation: "我 + 在 + 学校 + 学",
   },
   negation: {
     description: "Makes sentences negative. 不 (bù) negates actions and states, 没 (méi) negates possession and past actions.",
-    example: "Subject + 不/没 + Verb",
-    translation: "我 + 不 + 吃 + 肉",
   },
   modal: {
     description: "Helper verbs that express ability, desire, or permission. They come before the main verb in Chinese.",
-    example: "Subject + Modal + Verb + Object",
-    translation: "我 + 要 + 吃 + 苹果",
   },
   particle: {
     description: "Small grammatical markers. 是 (shì) links subjects to nouns. 很 (hěn) links subjects to adjectives.",
-    example: "Subject + 是/很 + …",
-    translation: "我 + 是 + 学生",
   },
   adverb: {
     description: "Modifies verbs or adjectives to add detail. Adverbs come before the word they modify in Chinese.",
-    example: "Subject + Adverb + Verb",
-    translation: "我们 + 都 + 去",
   },
   preposition: {
     description: "Words like 在, 把, 被, 比, 给, 对 that introduce location, objects, or comparisons in a sentence.",
-    example: "Subject + 在 + Place + Verb",
-    translation: "我 + 在 + 学校 + 学",
   },
   conjunction: {
     description: "Connects clauses or sentences. Words like 因为 (because), 所以 (so), 但是 (but), 如果 (if), 虽然 (although).",
-    example: "因为 + Clause + 所以 + Clause",
-    translation: "因为 + 下雨 + 所以 + 不去",
   },
   complement: {
     description: "Describes the result, degree, or direction of an action. Placed after a verb, often with 得 (de).",
-    example: "Subject + Verb + 得 + Complement",
-    translation: "他 + 跑 + 得 + 很快",
   },
   clause: {
     description: "A short, self-contained clause used in compound sentence patterns. Often paired with conjunctions.",
-    example: "因为 + Clause + 所以 + Clause",
-    translation: "因为 + 下雨 + 所以 + 不去",
   },
 };
 
@@ -166,13 +134,6 @@ export default function WordBankExplorer() {
         <p className="text-sm text-slate-600 leading-relaxed mb-3">
           {info.description}
         </p>
-        <div className="bg-white/80 rounded-lg border border-indigo-100 p-3">
-          <p className="text-xs text-slate-400 mb-1">Sentence pattern:</p>
-          <p className="text-sm font-mono text-indigo-600 mb-1">{info.example}</p>
-          <p className="text-lg font-bold font-chinese text-indigo-700">
-            {info.translation}
-          </p>
-        </div>
         <p className="text-xs text-slate-400 mt-2">
           Click any word below to hear its pronunciation
         </p>

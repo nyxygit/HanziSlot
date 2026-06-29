@@ -12,8 +12,20 @@ export default function Home() {
   const [levels, setLevels] = useState<Level[]>([]);
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"structures" | "topics" | "wordbank">("structures");
+  const [activeTab, setActiveTab] = useState<"structures" | "topics" | "wordbank">("topics");
   const [randomCount, setRandomCount] = useState(10);
+
+  // Read ?tab query param on mount to allow external links (e.g. "Back to Structures")
+  // to open the correct tab.
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get("tab");
+      if (tabParam === "structures" || tabParam === "topics" || tabParam === "wordbank") {
+        setActiveTab(tabParam);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     async function load() {
@@ -64,75 +76,45 @@ export default function Home() {
 
       {/* Tab Navigation + Content */}
       <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
-        {/* Tab bar */}
-        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 w-full sm:w-fit mb-6 md:mb-8 overflow-x-auto">
-          <button
-            onClick={() => setActiveTab("structures")}
-            className={`
-              px-4 py-2 rounded-lg text-sm font-semibold transition-all
-              ${activeTab === "structures"
-                ? "bg-white text-indigo-600 shadow-sm"
-                : "text-slate-500 hover:text-slate-700"
-              }
-            `}
-          >
-            🏗️ Sentence Structures
-          </button>
+        {/* Tab bar — icons only, full width, centered */}
+        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 w-full mb-6 md:mb-8">
           <button
             onClick={() => setActiveTab("topics")}
             className={`
-              px-4 py-2 rounded-lg text-sm font-semibold transition-all
+              flex-1 flex items-center justify-center py-3 rounded-lg text-2xl transition-all
               ${activeTab === "topics"
                 ? "bg-white text-indigo-600 shadow-sm"
                 : "text-slate-500 hover:text-slate-700"
               }
             `}
           >
-            📚 Topics
+            📚
+          </button>
+          <button
+            onClick={() => setActiveTab("structures")}
+            className={`
+              flex-1 flex items-center justify-center py-3 rounded-lg text-2xl transition-all
+              ${activeTab === "structures"
+                ? "bg-white text-indigo-600 shadow-sm"
+                : "text-slate-500 hover:text-slate-700"
+              }
+            `}
+          >
+            🏗️
           </button>
           <button
             onClick={() => setActiveTab("wordbank")}
             className={`
-              px-4 py-2 rounded-lg text-sm font-semibold transition-all
+              flex-1 flex items-center justify-center py-3 rounded-lg text-2xl transition-all
               ${activeTab === "wordbank"
                 ? "bg-white text-indigo-600 shadow-sm"
                 : "text-slate-500 hover:text-slate-700"
               }
             `}
           >
-            📖 Word Bank
+            📖
           </button>
         </div>
-
-        {activeTab === "structures" && (
-          <>
-            <h2 className="text-xl font-bold text-slate-800 mb-2">
-              Sentence Structures
-            </h2>
-            <p className="text-sm text-slate-500 mb-6">
-              Learn fundamental Chinese sentence patterns, from simple to complex
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {structureLevels.map((level) => {
-                const completedLevel = progress?.completedLevels[level.id];
-                const bestStars = completedLevel?.stars ?? 0;
-                const bestScore = completedLevel?.score ?? 0;
-                const maxScore = level.sentences.length * 3;
-
-                return (
-                  <LevelSelectCard
-                    key={level.id}
-                    level={level}
-                    stars={bestStars}
-                    completed={completedLevel?.completed ?? false}
-                    score={bestScore}
-                    maxScore={maxScore}
-                  />
-                );
-              })}
-            </div>
-          </>
-        )}
 
         {activeTab === "topics" && (
           <>
@@ -186,6 +168,36 @@ export default function Home() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {topicLevels.map((level) => {
+                const completedLevel = progress?.completedLevels[level.id];
+                const bestStars = completedLevel?.stars ?? 0;
+                const bestScore = completedLevel?.score ?? 0;
+                const maxScore = level.sentences.length * 3;
+
+                return (
+                  <LevelSelectCard
+                    key={level.id}
+                    level={level}
+                    stars={bestStars}
+                    completed={completedLevel?.completed ?? false}
+                    score={bestScore}
+                    maxScore={maxScore}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
+
+        {activeTab === "structures" && (
+          <>
+            <h2 className="text-xl font-bold text-slate-800 mb-2">
+              Sentence Structures
+            </h2>
+            <p className="text-sm text-slate-500 mb-6">
+              Learn fundamental Chinese sentence patterns, from simple to complex
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {structureLevels.map((level) => {
                 const completedLevel = progress?.completedLevels[level.id];
                 const bestStars = completedLevel?.stars ?? 0;
                 const bestScore = completedLevel?.score ?? 0;
