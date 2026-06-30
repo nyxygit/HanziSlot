@@ -3,7 +3,7 @@ import { getDistractors } from "@/data/wordBank";
 
 export const topicSchool: Level = {
   id: "topic-school",
-  name: "🏫 School Life",
+  name: "School Life",
   description: "Talk about school, classes, and studying in Chinese",
   category: "topic",
   topic: "School",

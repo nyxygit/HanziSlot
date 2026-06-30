@@ -36,6 +36,21 @@ import { level30Dui } from "./levels/level-30-dui";
 import { topicSchool } from "./topics/topic-school";
 import { topicShopping } from "./topics/topic-shopping";
 import { topicClothing } from "./topics/topic-clothing";
+import { topicSelfIntro } from "./topics/topic-self-intro";
+import { topicDailyRoutine } from "./topics/topic-daily-routine";
+import { topicFood } from "./topics/topic-food";
+import { topicTransportation } from "./topics/topic-transportation";
+import { topicWeather } from "./topics/topic-weather";
+import { topicHobbies } from "./topics/topic-hobbies";
+import { topicFamily } from "./topics/topic-family";
+import { topicDirections } from "./topics/topic-directions";
+import { topicDoctor } from "./topics/topic-doctor";
+import { topicDormitory } from "./topics/topic-dormitory";
+import { topicTravel } from "./topics/topic-travel";
+import { topicDiningOut } from "./topics/topic-dining-out";
+import { topicFestivals } from "./topics/topic-festivals";
+import { topicFriends } from "./topics/topic-friends";
+import { topicCampusLife } from "./topics/topic-campus-life";
 
 // All levels in order
 export const allLevels: Level[] = [
@@ -72,6 +87,21 @@ export const allLevels: Level[] = [
   topicSchool,
   topicShopping,
   topicClothing,
+  topicSelfIntro,
+  topicDailyRoutine,
+  topicFood,
+  topicTransportation,
+  topicWeather,
+  topicHobbies,
+  topicFamily,
+  topicDirections,
+  topicDoctor,
+  topicDormitory,
+  topicTravel,
+  topicDiningOut,
+  topicFestivals,
+  topicFriends,
+  topicCampusLife,
 ];
 
 // Index levels by ID for quick lookup

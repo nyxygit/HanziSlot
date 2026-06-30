@@ -17,6 +17,21 @@ const topicEmojis: Record<string, string> = {
   School: "🏫",
   Shopping: "🛒",
   Clothing: "👕",
+  "Self-Introduction": "🙋",
+  "Daily Routine": "⏰",
+  "Food & Dining": "🍜",
+  Transportation: "🚌",
+  Weather: "🌤️",
+  Hobbies: "🎵",
+  Family: "👪",
+  Directions: "🗺️",
+  Doctor: "🏥",
+  Dormitory: "🏠",
+  Travel: "✈️",
+  "Dining Out": "🍽️",
+  Festivals: "🎊",
+  "Making Friends": "🤝",
+  "Campus Life": "📚",
 };
 
 export default function LevelSelectCard({
@@ -67,7 +82,6 @@ export default function LevelSelectCard({
           <h3 className="font-semibold text-slate-800 group-hover:text-indigo-600 transition-colors truncate">
             {level.name}
           </h3>
-          <p className="text-xs text-slate-500 truncate">Topic</p>
         </div>
       </div>
 
@@ -75,19 +89,7 @@ export default function LevelSelectCard({
         {level.description}
       </p>
 
-      <div className="flex items-center justify-between">
-        <div className="flex gap-0.5">
-          {[1, 2, 3].map((s) => (
-            <span
-              key={s}
-              className={`text-lg ${
-                s <= stars ? "text-amber-400" : "text-slate-200"
-              }`}
-            >
-              ★
-            </span>
-          ))}
-        </div>
+      <div className="flex items-center justify-end">
         {completed && (
           <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
             {score}/{maxScore}
