@@ -55,11 +55,11 @@ export default function SlotColumn({
   disabled = false,
   fixed = false,
 }: SlotColumnProps) {
-  // Pinyin and English for the currently SELECTED word (not just the correct answer)
-  // Use || instead of ?? so that empty-string lookups (word not in wordBank) fall back
-  // to the part's pinyin/english which is always defined on SentencePart.
-  const selectedPinyin = optionPinyins[selectedIndex] || pinyin;
-  const selectedEnglish = optionEnglishs[selectedIndex] || english;
+  // Pinyin and English for the currently SELECTED word (not just the correct answer).
+  // optionPinyins/optionEnglishs are populated from the wordBank (see gameReducer::initializeSlots).
+  // Falls back to the part's pinyin/english as a safety net.
+  const selectedPinyin = optionPinyins[selectedIndex] ?? pinyin;
+  const selectedEnglish = optionEnglishs[selectedIndex] ?? english;
   const directionRef = useRef(1); // 1 = forward (scroll up), -1 = backward (scroll down)
   const reelRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
