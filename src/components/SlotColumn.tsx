@@ -56,8 +56,10 @@ export default function SlotColumn({
   fixed = false,
 }: SlotColumnProps) {
   // Pinyin and English for the currently SELECTED word (not just the correct answer)
-  const selectedPinyin = optionPinyins[selectedIndex] ?? pinyin;
-  const selectedEnglish = optionEnglishs[selectedIndex] ?? english;
+  // Use || instead of ?? so that empty-string lookups (word not in wordBank) fall back
+  // to the part's pinyin/english which is always defined on SentencePart.
+  const selectedPinyin = optionPinyins[selectedIndex] || pinyin;
+  const selectedEnglish = optionEnglishs[selectedIndex] || english;
   const directionRef = useRef(1); // 1 = forward (scroll up), -1 = backward (scroll down)
   const reelRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
